@@ -34,7 +34,7 @@ def root():
 def get_posts():
     return {"data":my_posts}
 
-@app.post("/posts")
+@app.post("/posts",status_code=status.HTTP_201_CREATED)
 def create_post(post: Post):
     post_dict=post.dict()
     post_dict['id']=randrange(0,10000000)
@@ -55,6 +55,13 @@ def get_post(id : int):
     return {"post_detail": post }
 
 
+
+#Let's do that to the create posts
+#Just add a 201 to the decorator itself
+#Now the HTTP Error things is fixed
+#However even for successful tasks there are defined HTTP responses
+#Such as we should a get a 201 for a successful creation
+#Let's see how to do that 
 
 #This is a cool way
 #But a better way is just throwing a FastAPI HTTP Exception
