@@ -20,7 +20,7 @@ def findPost(id):
           return p
         else:
             continue  
-    return "Post Not Found"
+    return "404 : Post Not Found"
     
 class Post(BaseModel):
     title:str
