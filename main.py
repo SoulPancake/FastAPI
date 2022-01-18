@@ -45,11 +45,25 @@ def create_post(post: Post):
     return {"New post":post_dict}
 
 
+@app.get("/posts/latest")
+def get_latest_post():
+    return {"latest Post" : my_posts[len(my_posts)-1]}
+
 #Retrieving a singular post
 @app.get("/posts/{id}")
 def get_post(id : int):
     print("id = ",id)
     return {"post_detail": findPost(id)}
+
+
+
+
+
+#This is where order matters!
+
+
+#Now I'll write a decorator and a path 
+#That would retrieve the latest post for me
 
 # Whenever we have a path parameter it will always be returned
 # as as string
