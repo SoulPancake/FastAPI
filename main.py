@@ -20,7 +20,7 @@ def findPost(id):
           return p
         else:
             continue  
-    return -1
+    return "Post Not Found"
     
 class Post(BaseModel):
     title:str
@@ -47,10 +47,14 @@ def create_post(post: Post):
 
 #Retrieving a singular post
 @app.get("/posts/{id}")
-def get_post(id):
+def get_post(id : int):
     print("id = ",id)
-    return {"post_detail": findPost(int(id))}
+    return {"post_detail": findPost(id)}
 
 # Whenever we have a path parameter it will always be returned
 # as as string
 # so Make sure to typecast it before you use integral comparisions on it
+
+#If we get a string passed and it cannot be converted to an integer
+#By Itself then we use FastAPI to validate it for us
+#And If possible it will convert it to an integer
