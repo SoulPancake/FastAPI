@@ -12,7 +12,12 @@ my_posts=[{"title":"Title of 1st post","content":"Content of 1st post","id":1},
           {"title":"My favourite food","content":"I love Nachos","id":2}]
 
 
-
+def deletePost(id):
+    for p in my_posts:
+        if p["id"]==id:
+            del p
+            return f"Post {id} Deleted Successfully"
+    return "Post not found"        
 
 def findPost(id):
     for p in my_posts:
@@ -54,8 +59,17 @@ def get_post(id : int):
                             detail=f"Post with id {id} was not found")
     return {"post_detail": post }
 
+@app.delete("/posts/{id}")
+def delete_post(id: int):
+    post=deletePost(id)
+    if post=="Post not found":
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                            detail=post)
+    return {"post_detail": post }    
 
 
+# https://youtu.be/0sOvCWFmrtA?t=7403
+# fEELING EXTREMELY TIRED WILL implement the delete Post later
 #Let's do that to the create posts
 #Just add a 201 to the decorator itself
 #Now the HTTP Error things is fixed
