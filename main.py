@@ -47,12 +47,9 @@ def create_post(post: Post):
 
 #Retrieving a singular post
 @app.get("/posts/{id}")
-def get_post(id : int,response: Response):
+def get_post(id : int):
     post=findPost(id)
-    print("Post is " ,post)
     if not post:
-        # response.status_code=status.HTTP_404_NOT_FOUND
-        # return {"message": f"Post with id {id} was not found"}
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Post with id {id} was not found")
     return {"post_detail": post }
