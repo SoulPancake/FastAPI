@@ -4,6 +4,13 @@ from pydantic import BaseModel
 app=FastAPI()
 
 
+class Post(BaseModel):
+    Title:str
+    Content:str
+    
+
+
+
 @app.get("/")
 def root():
     return {"message": "Hey There! Welcome to the API!"}
@@ -13,5 +20,5 @@ def get_posts():
     return {"data":"Hey There!These are your posts!"}
 
 @app.post("/createpost")
-def create_post(payload: dict= Body(...)):
-    return {"New post":f"Title :{payload['title']} Content: {payload['content']}"}
+def create_post(payload: Post):
+    return {"New post":f"Title :{payload.Title} Content: {payload.Content}"}
