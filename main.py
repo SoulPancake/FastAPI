@@ -1,5 +1,5 @@
 from typing import Optional
-from fastapi import FastAPI
+from fastapi import FastAPI,Response,status,HTTPException
 from fastapi.params import Body
 from pydantic import BaseModel
 from random import randint, randrange
@@ -18,9 +18,7 @@ def findPost(id):
     for p in my_posts:
         if p["id"]==id:
           return p
-        else:
-            continue  
-    return "404 : Post Not Found"
+       
     
 class Post(BaseModel):
     title:str
@@ -45,19 +43,26 @@ def create_post(post: Post):
     return {"New post":post_dict}
 
 
-@app.get("/posts/latest")
-def get_latest_post():
-    return {"latest Post" : my_posts[len(my_posts)-1]}
+
 
 #Retrieving a singular post
 @app.get("/posts/{id}")
-def get_post(id : int):
-    print("id = ",id)
-    return {"post_detail": findPost(id)}
+def get_post(id : int,response: Response):
+    post=findPost(id)
+    print("Post is " ,post)
+    if not post:
+        response.status_code=status.HTTP_404_NOT_FOUND
+        return {"message": f"Post with id {id} was not found"}
+    return {"post_detail": post }
 
 
 
+#This is a cool way
+#But a better way is just throwing a FastAPI HTTP Exception
 
+
+#Instead of remembering which HTTP code to use
+#We can use a FastAPI library called status
 
 #This is where order matters!
 
