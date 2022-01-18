@@ -11,6 +11,17 @@ app=FastAPI()
 my_posts=[{"title":"Title of 1st post","content":"Content of 1st post","id":1},
           {"title":"My favourite food","content":"I love Nachos","id":2}]
 
+
+
+
+def findPost(id):
+    for p in my_posts:
+        if p["id"]==id:
+          return p
+        else:
+            continue  
+    return -1
+    
 class Post(BaseModel):
     title:str
     content:str    
@@ -38,4 +49,8 @@ def create_post(post: Post):
 @app.get("/posts/{id}")
 def get_post(id):
     print("id = ",id)
-    return {"post_detail":f"Here is post {id} "}
+    return {"post_detail": findPost(int(id))}
+
+# Whenever we have a path parameter it will always be returned
+# as as string
+# so Make sure to typecast it before you use integral comparisions on it
