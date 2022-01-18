@@ -32,3 +32,10 @@ def create_post(post: Post):
     my_posts.append(post_dict)
     
     return {"New post":post_dict}
+
+
+#Retrieving a singular post
+@app.get("/posts/{id}")
+def get_post(id):
+    print("id = ",id)
+    return {"post_detail":f"Here is post {id} "}
