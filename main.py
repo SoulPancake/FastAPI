@@ -94,6 +94,22 @@ def update_post(id : int,post: Post):
     
 
 
+#Beautiful
+#we might not even need to use POSTMAN and we can just use swagger UI
+#to test out our operations
+#we also have something called redoc
+#which has a different UI for trying out all these operations
+#WE CAN GET A DOCUMENT POWERED BY REDOC
+
+#We can click on TryItOut and execute to get it to execute the path operations
+#we defined
+
+#FastAPI has default swaggerUI SUPPORT
+#FastAPI does all the documentation for you automatically
+#You don't need to write a single line of code for that
+#Which is pretty awesome
+#It updates the documentation for your path operations by itself
+
 
 #That's all about CRUD operations 
 #They all work perfectly!!
