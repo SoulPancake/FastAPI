@@ -13,6 +13,19 @@ app=FastAPI()
 my_posts=[{"title":"Title of 1st post","content":"Content of 1st post","id":1},
           {"title":"My favourite food","content":"I love Nachos","id":2}]
 
+class Post(BaseModel):
+    title:str
+    content:str    
+    id:Optional[int]=None
+
+
+def find_post_index(id):
+    for i,p in enumerate(my_posts):
+        if p['id']==id:
+            return i
+        
+
+
 
 def findPost(id):
     for p in my_posts:
@@ -28,10 +41,7 @@ def deletePost(id):
     return f"Post with ID {id} not found"  
        
     
-class Post(BaseModel):
-    title:str
-    content:str    
-    id:Optional[int]=None
+
 
 
 @app.get("/")
@@ -71,8 +81,27 @@ def delete_post(id: int):
     return Response(status_code=status.HTTP_204_NO_CONTENT)    
 
 
+@app.put("/posts/{id}")
+def update_post(id : int,post: Post):
+    index=find_post_index(id)
+    if index==None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"Post with id {id} does not exist")
+    post_dict=post.dict()
+    post_dict['id']=id
+    my_posts[index]=post_dict    
+    return {"data":post_dict}
+    
 
 
+
+#That's all about CRUD operations 
+#They all work perfectly!!
+#If not index apparently broke the update operation at index 0 
+#So,Changed that to index==None
+
+
+#Now we're going to create the Update post operation
 
 #I'm not getting that error but 
 #The basic idea is that when you're sending back a 204 you must not send back any 
