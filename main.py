@@ -63,14 +63,18 @@ def get_post(id : int):
 @app.delete("/posts/{id}",status_code=status.HTTP_204_NO_CONTENT)
 def delete_post(id: int):
     post=deletePost(id)
-    if post==f"Post with ID {id} not found":
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
-                            detail=post)
-    return {"post_detail": post }    
+    
+    return Response(status_code=status.HTTP_204_NO_CONTENT)    
 
 
 
 
+
+#I'm not getting that error but 
+#The basic idea is that when you're sending back a 204 you must not send back any 
+#data
+#However it is essential that with a 204 we don't send any data back
+#So we need to send a response that follows this protocol
 
 
 #Finally implemented a successful delete operation by id
