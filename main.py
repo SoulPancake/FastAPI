@@ -20,9 +20,11 @@ def deletePost(id):
     return "Post not found"        
 
 def findPost(id):
-    for p in my_posts:
+    for i,p in enumerate(my_posts):
         if p["id"]==id:
-          return p
+          my_posts.pop(i)
+          return "Post Successfully Deleted"
+    return f"Post with ID {id} not found"  
        
     
 class Post(BaseModel):
@@ -66,6 +68,9 @@ def delete_post(id: int):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
                             detail=post)
     return {"post_detail": post }    
+
+
+
 
 
 # https://youtu.be/0sOvCWFmrtA?t=7403
