@@ -93,6 +93,20 @@ def update_post(id : int,post: Post):
     return {"data":post_dict}
     
 
+#We restructured our folders
+#Kept everything inside of our app directory
+#Now we can simply change the uvicorn thing
+#to refer to this package
+# uvicorn app.main:app --reload
+
+
+
+#Python has a fancy word for folder -> packages
+#and for a folder to become a package you need to add a __init__.py
+#inside that
+#Now we'll restructure our folders
+#and put this file inside an app folder
+
 
 #Beautiful
 #we might not even need to use POSTMAN and we can just use swagger UI
