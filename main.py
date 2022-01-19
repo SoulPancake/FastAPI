@@ -12,14 +12,13 @@ my_posts=[{"title":"Title of 1st post","content":"Content of 1st post","id":1},
           {"title":"My favourite food","content":"I love Nachos","id":2}]
 
 
-def deletePost(id):
+def findPost(id):
     for p in my_posts:
         if p["id"]==id:
-            del p
-            return f"Post {id} Deleted Successfully"
-    return "Post not found"        
+            return p
+    return -1        
 
-def findPost(id):
+def deletePost(id):
     for i,p in enumerate(my_posts):
         if p["id"]==id:
           my_posts.pop(i)
@@ -56,21 +55,28 @@ def create_post(post: Post):
 @app.get("/posts/{id}")
 def get_post(id : int):
     post=findPost(id)
-    if not post:
+    if post==-1:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Post with id {id} was not found")
     return {"post_detail": post }
 
-@app.delete("/posts/{id}")
+@app.delete("/posts/{id}",status_code=status.HTTP_204_NO_CONTENT)
 def delete_post(id: int):
     post=deletePost(id)
-    if post=="Post not found":
+    if post==f"Post with ID {id} not found":
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
                             detail=post)
     return {"post_detail": post }    
 
 
 
+
+
+
+#Finally implemented a successful delete operation by id
+# Now the standard for a successful deletion is 204
+#So we need to update the default status code of our delete operation using
+#the decorator
 
 
 # https://youtu.be/0sOvCWFmrtA?t=7403
