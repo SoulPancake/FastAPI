@@ -1,3 +1,5 @@
+from ast import Raise
+from logging import raiseExceptions
 from typing import Optional
 from fastapi import FastAPI,Response,status,HTTPException
 from fastapi.params import Body
@@ -63,7 +65,9 @@ def get_post(id : int):
 @app.delete("/posts/{id}",status_code=status.HTTP_204_NO_CONTENT)
 def delete_post(id: int):
     post=deletePost(id)
-    
+    if post==f"Post with ID {id} not found":
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=post)
     return Response(status_code=status.HTTP_204_NO_CONTENT)    
 
 
