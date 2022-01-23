@@ -8,16 +8,20 @@ from random import randint, randrange
 import psycopg2
 import psycopg2.extras
 from psycopg2.extras import RealDictCursor
+import time
 app=FastAPI()
 
-
-try:
-    conn=psycopg2.connect(host='localhost',database='fastapi',user='postgres',password='clear',cursor_factory=RealDictCursor)
-    cursor=conn.cursor()
-    print("Database connection was successsful")
-except Exception as error:
-    print("Connecting to Database failed")  
-    print("The error was",error) 
+while True:
+    
+    try:
+        conn=psycopg2.connect(host='localhost',database='fastapi',user='postgres',password='clear',cursor_factory=RealDictCursor)
+        cursor=conn.cursor()
+        print("Database connection was successsful")
+        break
+    except Exception as error:
+        print("Connecting to Database failed")  
+        print("The error was",error) 
+        time.sleep(2)
 
 
 my_posts=[{"title":"Title of 1st post","content":"Content of 1st post","id":1},
@@ -102,6 +106,21 @@ def update_post(id : int,post: Post):
     my_posts[index]=post_dict    
     return {"data":post_dict}
     
+
+#Now the reconnection attempt might be way too fast
+#So we need something to delay it a bit before attempting to reconnect
+#So we'll import the time module and do that
+#This would be a nice way of handling the internet disconnection or a similar
+#issue
+
+#We need to ensure that the database connection is established 
+#And we need to wait till it is established and we cannot move on with the rest of
+#the code if the connection is not properly established
+#So throwing the error and starting the server anyway is of no use
+#So we need to ensure that the connection is established
+#SO we place the entire logic for the connnection to the database inside a while loop
+#the while loop will go on indefinitely until we successfully 
+#establish a connection and then we can break out of the loop
 
 #We restructured our folders
 #Kept everything inside of our app directory
