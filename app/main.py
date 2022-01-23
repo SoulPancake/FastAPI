@@ -74,6 +74,7 @@ def create_post(post: Post):
     cursor.execute("""INSERT INTO posts (title,content,published) VALUES(%s,%s,%s) RETURNING * """,
                    (post.title,post.content,post.published))
     new_post=cursor.fetchone()
+    conn.commit() #Pushes the above changes to the database
     return {"Data ":new_post}
 
 
