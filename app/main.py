@@ -6,7 +6,8 @@ from fastapi.params import Body
 from pydantic import BaseModel
 from random import randint, randrange
 import psycopg2
-from psycopg2 import RealDictCursor
+import psycopg2.extras
+from psycopg2.extras import RealDictCursor
 app=FastAPI()
 
 
