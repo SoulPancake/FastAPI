@@ -1,6 +1,7 @@
 from ast import Raise
 from logging import raiseExceptions
 from typing import Optional
+from xmlrpc.client import boolean
 from fastapi import FastAPI,Response,status,HTTPException
 from fastapi.params import Body
 from pydantic import BaseModel
@@ -21,7 +22,7 @@ while True:
     except Exception as error:
         print("Connecting to Database failed")  
         print("The error was",error) 
-        time.sleep(2)
+        time.sleep(3)
 
 
 my_posts=[{"title":"Title of 1st post","content":"Content of 1st post","id":1},
@@ -30,7 +31,7 @@ my_posts=[{"title":"Title of 1st post","content":"Content of 1st post","id":1},
 class Post(BaseModel):
     title:str
     content:str    
-    id:Optional[int]=None
+    published:Optional[boolean]=True
 
 
 def find_post_index(id):
@@ -64,15 +65,16 @@ def root():
 
 @app.get("/posts")
 def get_posts():
-    return {"data":my_posts}
+    cursor.execute("""SELECT * FROM posts""")
+    posts=cursor.fetchall()
+    return {"data":posts}
 
 @app.post("/posts",status_code=status.HTTP_201_CREATED)
 def create_post(post: Post):
-    post_dict=post.dict()
-    post_dict['id']=randrange(0,10000000)
-    my_posts.append(post_dict)
-    
-    return {"New post":post_dict}
+    cursor.execute("""INSERT INTO posts (title,content,published) VALUES(%s,%s,%s) RETURNING * """,
+                   (post.title,post.content,post.published))
+    new_post=cursor.fetchone()
+    return {"Data ":new_post}
 
 
 
@@ -106,6 +108,16 @@ def update_post(id : int,post: Post):
     my_posts[index]=post_dict    
     return {"data":post_dict}
     
+
+#Now we will implement the createPosts function using SQL queries
+
+
+
+#Now we will implement the getPosts function
+#Using SQL statements to get the posts from the database
+#USing the cursor
+#Which runs our queries
+
 
 #Now the reconnection attempt might be way too fast
 #So we need something to delay it a bit before attempting to reconnect
