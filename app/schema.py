@@ -6,4 +6,8 @@ class PostBase(BaseModel):
     published:bool=True
     
 class PostCreate(PostBase):
-    pass    
+    pass
+
+
+#These classes are essentially schema/pydantic models
+#which are used to validate the request and responses    

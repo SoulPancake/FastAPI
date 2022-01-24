@@ -86,12 +86,6 @@ def get_posts(db: Session = Depends(get_db)):
     # posts=cursor.fetchall()
     return {"data":posts}
 
-@app.get("/sqlalchemy")
-def sql_alchemyTest( db: Session = Depends(get_db)):
-    posts=db.query(models.Post).all()
-                                # /\ Until we run this last method (.all)
-                                # this is just a SQL query that hasn't been run yet
-    return {"Data ":posts}
 
     
 
