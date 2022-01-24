@@ -1,5 +1,6 @@
 from ast import Str
 from datetime import datetime
+import email
 from pydantic import BaseModel, EmailStr
 
 class PostBase(BaseModel):
@@ -36,4 +37,7 @@ class UserResponse(BaseModel):
     class Config:
         orm_mode=True     
                     
-                       
+
+class UserLogin(BaseModel):
+     email:EmailStr
+     password:str                       
