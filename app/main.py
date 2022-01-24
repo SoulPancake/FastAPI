@@ -115,10 +115,15 @@ def create_post(post: Post,db: Session = Depends(get_db)):
 
 #Retrieving a singular post
 @app.get("/posts/{id}")
-def get_post(id : int):
-    cursor.execute("""SELECT * FROM posts WHERE id = %s""",(id,))
-    post=cursor.fetchone()
-    # post=findPost(id)
+def get_post(id : int,db: Session = Depends(get_db)):
+    # cursor.execute("""SELECT * FROM posts WHERE id = %s""",(id,))
+    # post=cursor.fetchone()
+    # # post=findPost(id)
+    
+    post=db.query(models.Post).filter(models.Post.id==id).first()
+    
+    #.filter is equivalent to where
+    
     if not post:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Post with id {id} was not found")
