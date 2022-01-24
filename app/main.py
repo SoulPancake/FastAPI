@@ -90,9 +90,10 @@ def get_posts():
 
 @app.get("/sqlalchemy")
 def sql_alchemyTest( db: Session = Depends(get_db)):
-    posts=db.query(models.Post).all()
+    posts=db.query(models.Post)
+    print(posts) # WE CAN PRINT THIS TO SEE THE SQL BEHIND THIS
     
-    return {"Data ":posts}
+    return {"Data ":"Successful"}
 
     
 
@@ -140,6 +141,10 @@ def update_post(id : int,post: Post):
                             detail=f"Post with id {id} does not exist")
       
     return {"data":updated_post}
+
+
+#Next we will want to see what the SQL alchemy 
+#SQL queries actually are
 
 
 #A drawback with SQL Alchemy is that
