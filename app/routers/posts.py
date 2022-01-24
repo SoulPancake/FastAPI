@@ -5,9 +5,11 @@ from sqlalchemy.orm import Session
 from ..database import get_db
 
 
-router=APIRouter()
+router=APIRouter(
+    prefix="/posts"
+)
 
-@router.get("/posts",response_model=List[schema.PostResponse])
+@router.get("/",response_model=List[schema.PostResponse])
 def get_posts(db: Session = Depends(get_db)):
     posts=db.query(models.Post).all()
     # cursor.execute("""SELECT * FROM posts""")
@@ -18,7 +20,7 @@ def get_posts(db: Session = Depends(get_db)):
     
 
 
-@router.post("/posts",status_code=status.HTTP_201_CREATED,response_model=schema.PostResponse)
+@router.post("/",status_code=status.HTTP_201_CREATED,response_model=schema.PostResponse)
 def create_post(post: schema.PostCreate,db: Session = Depends(get_db)):
     
     new_post=models.Post(**post.dict())
@@ -33,7 +35,7 @@ def create_post(post: schema.PostCreate,db: Session = Depends(get_db)):
 
 
 #Retrieving a singular post
-@router.get("/posts/{id}",response_model=schema.PostResponse)
+@router.get("/{id}",response_model=schema.PostResponse)
 def get_post(id : int,db: Session = Depends(get_db)):
     # cursor.execute("""SELECT * FROM posts WHERE id = %s""",(id,))
     # post=cursor.fetchone()
@@ -48,7 +50,7 @@ def get_post(id : int,db: Session = Depends(get_db)):
                             detail=f"Post with id {id} was not found")
     return post
 
-@router.delete("/posts/{id}",status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{id}",status_code=status.HTTP_204_NO_CONTENT)
 def delete_post(id: int,db: Session = Depends(get_db)):
     # cursor.execute("""DELETE FROM posts WHERE id=%s RETURNING *""",(id,))
     # post=cursor.fetchone()
@@ -65,7 +67,7 @@ def delete_post(id: int,db: Session = Depends(get_db)):
     return Response(status_code=status.HTTP_204_NO_CONTENT)    
 
 
-@router.put("/posts/{id}",response_model=schema.PostResponse)
+@router.put("/{id}",response_model=schema.PostResponse)
 def update_post(id : int,post: schema.PostCreate,db: Session = Depends(get_db)):
     # cursor.execute("""UPDATE posts SET title= %s,content=%s,published=%s WHERE id= %s RETURNING *""",(post.title,post.content,post.published,id))
     # updated_post=cursor.fetchone()
