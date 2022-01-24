@@ -2,7 +2,7 @@ from ast import Raise
 from logging import raiseExceptions
 from typing import Optional
 from xmlrpc.client import boolean
-from fastapi import FastAPI,Response,status,HTTPException
+from fastapi import FastAPI,Response,status,HTTPException,Depends
 from fastapi.params import Body
 from pydantic import BaseModel
 from random import randint, randrange
@@ -10,7 +10,29 @@ import psycopg2
 import psycopg2.extras
 from psycopg2.extras import RealDictCursor
 import time
+from . import models
+from .database import engine,SessionLocal
+from sqlalchemy.orm import Session
+
+
+
+
+models.Base.metadata.create_all(bind=engine)
+
+
 app=FastAPI()
+
+
+# Dependency
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+        
+        
+        
 
 while True:
     
@@ -39,7 +61,10 @@ def find_post_index(id):
         if p['id']==id:
             return i
         
+#Testing out the DB connection and disconnection
 
+
+    
 
 
 def findPost(id):
@@ -68,6 +93,13 @@ def get_posts():
     cursor.execute("""SELECT * FROM posts""")
     posts=cursor.fetchall()
     return {"data":posts}
+
+@app.get("/sqlalchemy")
+def sql_alchemyTest( db: Session = Depends(get_db)):
+    return {"Status":"Success"}
+
+    
+
 
 @app.post("/posts",status_code=status.HTTP_201_CREATED)
 def create_post(post: Post):
@@ -112,6 +144,13 @@ def update_post(id : int,post: Post):
                             detail=f"Post with id {id} does not exist")
       
     return {"data":updated_post}
+
+
+
+
+#Now we will delete our posts table from PGAdmin 
+#And try to create that using the ORMs
+
     
 #ORMs are object relational mappers which are used to 
 #use Python code instead of SQL to interact with the DB
