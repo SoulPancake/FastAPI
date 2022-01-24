@@ -11,11 +11,11 @@ import psycopg2.extras
 from psycopg2.extras import RealDictCursor
 import time
 
-from app.utils import hashFunction
-from . import models,schema
+
+from . import models,schema,utils
 from .database import engine,get_db
 from sqlalchemy.orm import Session
-
+from .utils import hashFunction
 
 
 
@@ -172,4 +172,12 @@ def create_user(user : schema.UserCreate,db: Session = Depends(get_db)):
     
     return new_user
     
+
+@app.get("/users/{id}",status_code=status.HTTP_201_CREATED,response_model=schema.UserResponse)  
+def getUser(id:int,db: Session = Depends(get_db)):  
+    user=db.query(models.User).filter(models.User.id==id).first()
+    if not user:
+        raise HTTPException(status_code=404,detail=f"User with id {id} does not exist")
+    
+    return user
     
