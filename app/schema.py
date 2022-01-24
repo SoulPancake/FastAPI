@@ -9,5 +9,3 @@ class PostCreate(PostBase):
     pass
 
 
-#These classes are essentially schema/pydantic models
-#which are used to validate the request and responses    

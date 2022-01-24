@@ -1,3 +1,11 @@
+#Just like we can define how a request can look like we can also define how
+#a response should look like
+
+
+
+#These classes are essentially schema/pydantic models
+#which are used to validate the request and responses    
+
 from ast import Raise
 from logging import raiseExceptions
 from typing import Optional
