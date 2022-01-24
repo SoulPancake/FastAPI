@@ -10,7 +10,7 @@ import psycopg2
 import psycopg2.extras
 from psycopg2.extras import RealDictCursor
 import time
-from .routers import posts,users
+from .routers import posts,users,auth
 
 from . import models,schema,utils
 from .database import engine,get_db
@@ -36,6 +36,7 @@ app=FastAPI()
 
 app.include_router(posts.router)
 app.include_router(users.router)
+app.include_router(auth.router)
 
 @app.get("/")
 def root():
