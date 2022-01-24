@@ -1,6 +1,6 @@
 from ast import Raise
 from logging import raiseExceptions
-from typing import Optional
+from typing import Optional,List
 from xmlrpc.client import boolean
 from fastapi import FastAPI,Response,status,HTTPException,Depends
 from fastapi.params import Body
@@ -10,6 +10,8 @@ import psycopg2
 import psycopg2.extras
 from psycopg2.extras import RealDictCursor
 import time
+
+from app.utils import hashFunction
 from . import models,schema
 from .database import engine,get_db
 from sqlalchemy.orm import Session
@@ -17,7 +19,9 @@ from sqlalchemy.orm import Session
 
 
 
+
 models.Base.metadata.create_all(bind=engine)
+
 
 
 app=FastAPI()
@@ -79,7 +83,7 @@ def deletePost(id):
 def root():
     return {"message": "Hey There! Welcome to the API!"}
 
-@app.get("/posts")
+@app.get("/posts",response_model=List[schema.PostResponse])
 def get_posts(db: Session = Depends(get_db)):
     posts=db.query(models.Post).all()
     # cursor.execute("""SELECT * FROM posts""")
@@ -156,3 +160,16 @@ def update_post(id : int,post: schema.PostCreate,db: Session = Depends(get_db)):
     return post_query.first()
 
 
+@app.post("/users",status_code=status.HTTP_201_CREATED,response_model=schema.UserResponse)
+def create_user(user : schema.UserCreate,db: Session = Depends(get_db)):
+      
+    user.password=hashFunction(user.password)
+    new_user=models.User(**user.dict())
+
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+    
+    return new_user
+    
+    

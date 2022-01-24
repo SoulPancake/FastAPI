@@ -1,3 +1,14 @@
+#However storing passwords as strings is a vulnerability
+# We don't require such a vulnerability so we need to
+# use a passlib to hash our passwords to store it securely
+#passlib and bcrypt libraries
+
+# from pyexpat import model
+
+
+# To handle the get all posts response model
+# we need to import something called the List from the typing library
+
 #Just like we can define how a request can look like we can also define how
 #a response should look like
 
