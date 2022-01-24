@@ -113,6 +113,11 @@ def update_post(id : int,post: Post):
       
     return {"data":updated_post}
     
+#ORMs are object relational mappers which are used to 
+#use Python code instead of SQL to interact with the DB
+#Examples involve SQLAlchemy
+#SQL Alchemy inturn needs psycopg2 to connect to the database
+#Let's implement this additional layer of abstraction
 
 
 #post with ID in error message it is also vulnerable to a SQL injection
