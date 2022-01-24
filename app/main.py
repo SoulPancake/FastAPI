@@ -83,27 +83,33 @@ def root():
     return {"message": "Hey There! Welcome to the API!"}
 
 @app.get("/posts")
-def get_posts():
-    cursor.execute("""SELECT * FROM posts""")
-    posts=cursor.fetchall()
+def get_posts(db: Session = Depends(get_db)):
+    posts=db.query(models.Post).all()
+    # cursor.execute("""SELECT * FROM posts""")
+    # posts=cursor.fetchall()
     return {"data":posts}
 
 @app.get("/sqlalchemy")
 def sql_alchemyTest( db: Session = Depends(get_db)):
-    posts=db.query(models.Post) #db.query abstracts the SQL query behind this
-    print(posts) # WE CAN PRINT THIS TO SEE THE SQL BEHIND THIS
-    
-    return {"Data ":"Successful"}
+    posts=db.query(models.Post).all()
+                                # /\ Until we run this last method (.all)
+                                # this is just a SQL query that hasn't been run yet
+    return {"Data ":posts}
 
     
 
 
 @app.post("/posts",status_code=status.HTTP_201_CREATED)
-def create_post(post: Post):
-    cursor.execute("""INSERT INTO posts (title,content,published) VALUES(%s,%s,%s) RETURNING * """,
-                   (post.title,post.content,post.published))
-    new_post=cursor.fetchone()
-    conn.commit() #Pushes the above changes to the database
+def create_post(post: Post,db: Session = Depends(get_db)):
+    # cursor.execute("""INSERT INTO posts (title,content,published) VALUES(%s,%s,%s) RETURNING * """,
+    #                (post.title,post.content,post.published))
+    # new_post=cursor.fetchone()
+    # conn.commit() #Pushes the above changes to the database
+    new_post=models.Post(title=post.title,content=post.content,published=post.published)
+    db.add(new_post)
+    db.commit()
+    db.refresh(new_post)
+    
     return {"Data ":new_post}
 
 
