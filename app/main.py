@@ -97,7 +97,7 @@ def sql_alchemyTest( db: Session = Depends(get_db)):
 
 
 @app.post("/posts",status_code=status.HTTP_201_CREATED)
-def create_post(post: schema.Post,db: Session = Depends(get_db)):
+def create_post(post: schema.PostCreate,db: Session = Depends(get_db)):
     
     new_post=models.Post(**post.dict())
 
@@ -144,7 +144,7 @@ def delete_post(id: int,db: Session = Depends(get_db)):
 
 
 @app.put("/posts/{id}")
-def update_post(id : int,post: schema.Post,db: Session = Depends(get_db)):
+def update_post(id : int,post: schema.PostCreate,db: Session = Depends(get_db)):
     # cursor.execute("""UPDATE posts SET title= %s,content=%s,published=%s WHERE id= %s RETURNING *""",(post.title,post.content,post.published,id))
     # updated_post=cursor.fetchone()
     # conn.commit()
