@@ -90,7 +90,7 @@ def get_posts():
 
 @app.get("/sqlalchemy")
 def sql_alchemyTest( db: Session = Depends(get_db)):
-    posts=db.query(models.Post)
+    posts=db.query(models.Post) #db.query abstracts the SQL query behind this
     print(posts) # WE CAN PRINT THIS TO SEE THE SQL BEHIND THIS
     
     return {"Data ":"Successful"}
