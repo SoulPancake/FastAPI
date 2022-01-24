@@ -83,7 +83,9 @@ def create_post(post: Post):
 #Retrieving a singular post
 @app.get("/posts/{id}")
 def get_post(id : int):
-    post=findPost(id)
+    cursor.execute(f"""SELECT * FROM posts WHERE posts.id={id}""")
+    post=cursor.fetchone()
+    # post=findPost(id)
     if post==-1:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Post with id {id} was not found")
