@@ -109,11 +109,14 @@ def update_post(id : int,post: Post):
     conn.commit()
     if updated_post==None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f"Post with id {id} does not exist")
+                            detail=f"Post with given ID does not exist")
       
     return {"data":updated_post}
     
 
+
+#post with ID in error message it is also vulnerable to a SQL injection
+#So,Fix that
 
 #Execute's second parameter accepts tuple as the second parameter so just add
 #a comma after that "id"
