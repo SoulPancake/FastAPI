@@ -90,7 +90,9 @@ def get_posts():
 
 @app.get("/sqlalchemy")
 def sql_alchemyTest( db: Session = Depends(get_db)):
-    return {"Status":"Success"}
+    posts=db.query(models.Post).all()
+    
+    return {"Data ":posts}
 
     
 
@@ -140,6 +142,12 @@ def update_post(id : int,post: Post):
     return {"data":updated_post}
 
 
+#A drawback with SQL Alchemy is that
+#If the DB server already has a table with that name
+#Even if we make modifications of the model
+#It won't apply those to the table
+#So,This is one drawback
+#So we need something called Alembic to handle these migrations
 
 
 #Now we will delete our posts table from PGAdmin 
