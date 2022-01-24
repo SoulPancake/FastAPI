@@ -105,7 +105,13 @@ def create_post(post: Post,db: Session = Depends(get_db)):
     #                (post.title,post.content,post.published))
     # new_post=cursor.fetchone()
     # conn.commit() #Pushes the above changes to the database
+    
     new_post=models.Post(title=post.title,content=post.content,published=post.published)
+    #Now writing all the above lines explicitly is too much time and effort consuming
+    #and impractical for posts with say 50 columns
+    #So what do we do
+    #We have post as a pydantic model so we can essentially change it into
+    # a dict and then unpack it and pass that to the newPost parameters
     db.add(new_post)
     db.commit()
     db.refresh(new_post)
