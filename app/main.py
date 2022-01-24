@@ -83,10 +83,10 @@ def create_post(post: Post):
 #Retrieving a singular post
 @app.get("/posts/{id}")
 def get_post(id : int):
-    cursor.execute(f"""SELECT * FROM posts WHERE posts.id={id}""")
+    cursor.execute("""SELECT * FROM posts WHERE id = %s""",(id,))
     post=cursor.fetchone()
     # post=findPost(id)
-    if post==-1:
+    if not post:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Post with id {id} was not found")
     return {"post_detail": post }
@@ -111,6 +111,10 @@ def update_post(id : int,post: Post):
     my_posts[index]=post_dict    
     return {"data":post_dict}
     
+
+
+#Execute's second parameter accepts tuple as the second parameter so just add
+#a comma after that "id"
 
 #Now we will implement the createPosts function using SQL queries
 
