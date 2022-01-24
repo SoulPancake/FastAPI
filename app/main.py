@@ -153,15 +153,15 @@ def update_post(id : int,post: Post,db: Session = Depends(get_db)):
     # conn.commit()
     
     post_query=db.query(models.Post).filter(models.Post.id==id)
-    post=post_query.first()
+    postQ=post_query.first()
     
-    if post==None:
+    if postQ==None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Post with id {id} does not exist")
     post_query.update(post.dict(),synchronize_session=False)
     db.commit()
     #Bad way to do this
       
-    return {"data":"Successful"}
+    return {"data":post_query.first()}
 
 
