@@ -10,7 +10,7 @@ import psycopg2
 import psycopg2.extras
 from psycopg2.extras import RealDictCursor
 import time
-from . import models
+from . import models,schema
 from .database import engine,get_db
 from sqlalchemy.orm import Session
 
@@ -44,10 +44,7 @@ while True:
 my_posts=[{"title":"Title of 1st post","content":"Content of 1st post","id":1},
           {"title":"My favourite food","content":"I love Nachos","id":2}]
 
-class Post(BaseModel):
-    title:str
-    content:str    
-    published:Optional[boolean]=True
+
 
 
 def find_post_index(id):
@@ -100,7 +97,7 @@ def sql_alchemyTest( db: Session = Depends(get_db)):
 
 
 @app.post("/posts",status_code=status.HTTP_201_CREATED)
-def create_post(post: Post,db: Session = Depends(get_db)):
+def create_post(post: schema.Post,db: Session = Depends(get_db)):
     
     new_post=models.Post(**post.dict())
 
@@ -147,7 +144,7 @@ def delete_post(id: int,db: Session = Depends(get_db)):
 
 
 @app.put("/posts/{id}")
-def update_post(id : int,post: Post,db: Session = Depends(get_db)):
+def update_post(id : int,post: schema.Post,db: Session = Depends(get_db)):
     # cursor.execute("""UPDATE posts SET title= %s,content=%s,published=%s WHERE id= %s RETURNING *""",(post.title,post.content,post.published,id))
     # updated_post=cursor.fetchone()
     # conn.commit()
