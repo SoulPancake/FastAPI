@@ -109,7 +109,7 @@ def update_post(id : int,post: Post):
     conn.commit()
     if updated_post==None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f"Post with given ID does not exist")
+                            detail=f"Post with id {id} does not exist")
       
     return {"data":updated_post}
     
