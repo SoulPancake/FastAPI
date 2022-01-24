@@ -5,7 +5,8 @@ from ..database import get_db
 from ..utils import hashFunction
 
 router=APIRouter(
-    prefix="/users"
+    prefix="/users",
+    tags=['User Operations']
 )
 
 
