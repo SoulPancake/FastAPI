@@ -1,2 +1,2 @@
 # FastAPI
-https://youtu.be/0sOvCWFmrtA?t=10863
+https://youtu.be/0sOvCWFmrtA?t=28242
